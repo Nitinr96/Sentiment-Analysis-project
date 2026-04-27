@@ -4,43 +4,29 @@ from textblob import TextBlob
 # Page configuration
 st.set_page_config(page_title="Sentiment Analyzer", page_icon="📊")
 
-## Header Section
+# Header Section
 st.title("🧠 Sentiment Analysis Dashboard")
-st.markdown("Enter any text below to determine if the sentiment is **Positive**, **Negative**, or **Neutral**.")
+st.markdown("Enter any text below to determine the sentiment.")
 
----
+# This is how you create a line in Streamlit correctly
+st.divider() 
 
-## User Input
-user_input = st.text_area("Enter your text here:", placeholder="Type something like 'I love this app! It's so helpful.'")
+# User Input
+user_input = st.text_area("Enter your text here:", placeholder="Type something...")
 
 if st.button("Analyze Sentiment"):
     if user_input.strip() == "":
         st.warning("Please enter some text to analyze.")
     else:
-        # Sentiment Logic (Swap this part with your specific model code)
         blob = TextBlob(user_input)
         score = blob.sentiment.polarity
         
-        # Determine Sentiment Label and Color
         if score > 0:
-            label = "POSITIVE"
-            color = "green"
-            emoji = "😄"
+            st.success(f"POSITIVE 😄 (Score: {score:.2f})")
         elif score < 0:
-            label = "NEGATIVE"
-            color = "red"
-            emoji = "😡"
+            st.error(f"NEGATIVE 😡 (Score: {score:.2f})")
         else:
-            label = "NEUTRAL"
-            color = "gray"
-            emoji = "😐"
+            st.info(f"NEUTRAL 😐 (Score: {score:.2f})")
 
-        # Display Results
-        st.subheader("Result:")
-        st.markdown(f"### The sentiment is :{color}[{label} {emoji}]")
-        
-        # Optional: Show the raw score
-        st.info(f"Confidence Score (Polarity): {score:.2f}")
-
----
-st.caption("Powered by Streamlit and TextBlob")
+st.divider()
+st.caption("Powered by Streamlit")
