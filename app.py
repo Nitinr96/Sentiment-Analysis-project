@@ -1,32 +1,33 @@
 import streamlit as st
 from textblob import TextBlob
 
-# Page configuration
 st.set_page_config(page_title="Sentiment Analyzer", page_icon="📊")
 
-# Header Section
 st.title("🧠 Sentiment Analysis Dashboard")
-st.markdown("Enter any text below to determine the sentiment.")
+st.write("Analyze text and see the percentage of sentiment.")
 
-# This is how you create a line in Streamlit correctly
-st.divider() 
+st.divider()
 
-# User Input
-user_input = st.text_area("Enter your text here:", placeholder="Type something...")
+user_input = st.text_area("Enter your text here:")
 
 if st.button("Analyze Sentiment"):
     if user_input.strip() == "":
-        st.warning("Please enter some text to analyze.")
+        st.warning("Please enter text!")
     else:
         blob = TextBlob(user_input)
-        score = blob.sentiment.polarity
+        score = blob.sentiment.polarity # This is the -1 to 1 score
+        
+        # Convert score to percentage
+        percentage = abs(score) * 100
         
         if score > 0:
-            st.success(f"POSITIVE 😄 (Score: {score:.2f})")
+            st.success(f"Positive Sentiment: {percentage:.1f}% 😄")
+            st.progress(percentage / 100)
         elif score < 0:
-            st.error(f"NEGATIVE 😡 (Score: {score:.2f})")
+            st.error(f"Negative Sentiment: {percentage:.1f}% 😡")
+            st.progress(percentage / 100)
         else:
-            st.info(f"NEUTRAL 😐 (Score: {score:.2f})")
+            st.info("Neutral Sentiment: 100% 😐")
+            st.progress(0)
 
 st.divider()
-st.caption("Powered by Streamlit")
